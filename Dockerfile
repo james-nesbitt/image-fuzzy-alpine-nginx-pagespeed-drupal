@@ -3,6 +3,11 @@
 FROM quay.io/wunder/alpine-nginx-pagespeed
 MAINTAINER docker@wunder.io
 
+# Need curl for safe downloading
+RUN apk --update add curl && \
+    rm -rf /tmp/* && \
+    rm -rf /var/cache/apk/*
+
 ####
 # Use drupal specific confs
 #
@@ -13,8 +18,8 @@ MAINTAINER docker@wunder.io
 #   - ssl nginx: [emerg] "keepalive_timeout" directive is duplicate in /etc/nginx/conf.d/nginx_server_ssl.conf:16
 #
 RUN mkdir /etc/nginx/conf.d && \
-    wget -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/nginx.conf_drupal && \
-    wget -O /etc/nginx/conf.d/app_drupal.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_drupal.conf && \
-    wget -P /etc/nginx/conf.d https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/fastcgi_drupal.conf && \
-    wget -P /etc/nginx/conf.d https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_app.conf && \
-    wget -P /etc/nginx/conf.d https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_upstream.conf
+    curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/nginx.conf_drupal && \
+    curl -o /etc/nginx/conf.d/app_drupal.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/app_drupal.conf && \
+    curl -o /etc/nginx/conf.d/fastcgi_drupal.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/fastcgi_drupal.conf && \
+    curl -o /etc/nginx/conf.d/nginx_app.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_app.conf && \
+    curl -o /etc/nginx/conf.d/nginx_upstream.conf https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_upstream.conf
