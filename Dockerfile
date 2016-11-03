@@ -2,7 +2,7 @@
 #
 # VERSION v1.11.5-0
 #
-FROM quay.io/wunder/alpine-nginx-pagespeed
+FROM quay.io/wunder/fuzzy-alpine-nginx-pagespeed:v1.11.5
 MAINTAINER aleksi.johansson@wunder.io
 
 # Add Drupal specific configurations.
