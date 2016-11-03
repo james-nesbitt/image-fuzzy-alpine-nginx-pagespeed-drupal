@@ -1,24 +1,66 @@
-# wundertools-image-fuzzy-nginx
-A wundertools docker image for an nginx service that is ready for Drupal
+# image-fuzzy-alpine-nginx-pagespeed-drupal
 
-## Deploys to
+Fuzzy as in reference to the https://en.wikipedia.org/wiki/The_Mythical_Man-Month book where Fred describes the approach of "write one to throw away" as the best start.
 
-https://quay.io/repository/wunder/wundertools-image-fuzzy-nginx
+Nginx tailored for running Drupal 8 as the application.
 
-## Base
+Maintained by: Aleksi Johansson <aleksi.johansson@wunder.io>
 
-This image is heavily based on the alpine-php image https://github.com/wunderkraut/alpine-nginx-pagespeed
-And is mixed with confs from here: https://github.com/wunderkraut/docker-container-app-configs/tree/master/nginx
+## Docker
 
-The following confs are copied in:
+### Image
 
-1. https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/nginx.conf_drupal -> /etc/nginx/nginx.conf
-2. https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/app_drupal.conf --> /etc/nginx/conf.d/*
-3. https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/fastcgi_drupal.conf --> /etc/nginx/conf.d/*
-4. https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_app.conf --> /etc/nginx/conf.d/*
-5. https://raw.githubusercontent.com/wunderkraut/docker-container-app-configs/master/nginx/conf.d/nginx_upstream.conf --> /etc/nginx/conf.d/*
+This image is available publicly at:
 
-## TODO
+- quay.io/wunder/fuzzy-alpine-nginx-pagespeed-drupal : [![Docker Repository on Quay](https://quay.io/repository/wunder/fuzzy-alpine-nginx-pagespeed-drupal/status "Docker Repository on Quay")](https://quay.io/repository/wunder/fuzzy-alpine-nginx-pagespeed-drupal)
 
-1. should other configurations be included?
-2. better ssl integration, perhaps ssl certs?
+### Base
+
+This image is based on the fuzzy-alpine-nginx-pagespeed image https://github.com/wunderkraut/image-fuzzy-alpine-nginx-pagespeed.
+
+### Modifications
+
+This image adds the following files:
+
+#### /etc/nginx/conf.d/app_drupal.conf
+
+This is a custom nginx configuration:
+
+1. Set Drupal specific directives.
+
+#### /etc/nginx/conf.d/fastcgi_drupal.conf
+
+This is a custom nginx configuration:
+
+1. Set Drupal specific fastcgi definitions.
+
+#### /etc/nginx/conf.d/nginx_app.conf
+
+This is a custom nginx configuration:
+
+1. Define server and root for Drupal 8.
+
+#### /etc/nginx/conf.d/nginx_upstream.conf
+
+This is a custom nginx configuration:
+
+1. Configure upstream settings for PHP FastCGI.
+
+## Using this Image
+
+This image is tailored for Drupal 8 as the application.
+
+Run this container as an independent service:
+
+```
+$/> docker run -d quay.io/wunder/fuzzy-alpine-nginx-pagespeed-drupal
+```
+
+map any needed services such as php-fpm and mount any source code volumes to whatever path needed:
+
+```
+$/> docker run -d \
+      -v "$(pwd):/app/web" \
+      -l "my_running_fpm_container:fpm.app" \
+      quay.io/wunder/fuzzy-alpine-nginx-pagespeed-drupal
+```
